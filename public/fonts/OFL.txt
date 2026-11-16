@@ -1,0 +1,10 @@
+The font files in this folder are redistributed under the SIL Open Font License, Version 1.1.
+
+  Press Start 2P  - Copyright 2012 The Press Start 2P Project Authors (cody@zone38.net)
+  Bungee          - Copyright 2023 The Bungee Project Authors (https://github.com/djrrb/Bungee)
+  Space Grotesk   - Copyright 2020 The Space Grotesk Project Authors (https://github.com/floriankarsten/space-grotesk)
+
+They are bundled with the app (instead of being loaded from Google Fonts) so the
+kiosk shows its arcade typography with no internet connection.
+
+Full license text: https://openfontlicense.org/open-font-license-official-text/

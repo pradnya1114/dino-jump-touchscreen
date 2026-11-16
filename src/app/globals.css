@@ -1,0 +1,399 @@
+/* Fonts are bundled with the app (src/app/fonts.css) — nothing is loaded from the internet. */
+@import "tailwindcss";
+
+:root {
+  --arcade-yellow: #ffd23f;
+  --arcade-orange: #ff6b1a;
+  --arcade-green: #3ddc84;
+  --arcade-cyan: #22d3ee;
+  --arcade-pink: #f472b6;
+  --arcade-purple: #7c3aed;
+  --arcade-navy: #12082e;
+}
+
+html,
+body {
+  height: 100%;
+  overscroll-behavior: none;
+}
+
+body {
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  background: #0b0620;
+  color: #fff;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  overflow-x: hidden;
+}
+
+.font-pixel {
+  font-family: "Press Start 2P", monospace;
+}
+.font-arcade {
+  font-family: "Bungee", system-ui, sans-serif;
+}
+
+/* ---------- full-screen kiosk page shell ---------- */
+.kiosk-bg {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.kiosk-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(10, 4, 28, 0.55) 0%,
+    rgba(10, 4, 28, 0.25) 40%,
+    rgba(10, 4, 28, 0.65) 100%
+  );
+}
+
+/* ---------- arcade text effects ---------- */
+.text-stroke {
+  -webkit-text-stroke: 2px #1a0b2e;
+  paint-order: stroke fill;
+}
+.title-glow {
+  text-shadow:
+    0 4px 0 #7c2d12,
+    0 8px 0 rgba(0, 0, 0, 0.35),
+    0 0 42px rgba(255, 210, 63, 0.55);
+}
+.neon-cyan {
+  text-shadow:
+    0 0 8px rgba(34, 211, 238, 0.9),
+    0 0 28px rgba(34, 211, 238, 0.55);
+}
+.neon-pink {
+  text-shadow:
+    0 0 8px rgba(244, 114, 182, 0.9),
+    0 0 28px rgba(244, 114, 182, 0.55);
+}
+
+/* ---------- arcade buttons ---------- */
+.btn-arcade {
+  position: relative;
+  border-radius: 1.25rem;
+  border: 4px solid #1a0b2e;
+  box-shadow:
+    0 8px 0 #1a0b2e,
+    0 14px 28px rgba(0, 0, 0, 0.45),
+    inset 0 2px 0 rgba(255, 255, 255, 0.45);
+  transition:
+    transform 0.08s ease,
+    box-shadow 0.08s ease,
+    filter 0.15s ease;
+  cursor: pointer;
+}
+.btn-arcade:hover {
+  filter: brightness(1.08) saturate(1.1);
+}
+.btn-arcade:active {
+  transform: translateY(6px);
+  box-shadow:
+    0 2px 0 #1a0b2e,
+    0 6px 14px rgba(0, 0, 0, 0.4),
+    inset 0 2px 0 rgba(255, 255, 255, 0.35);
+}
+.btn-arcade:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  filter: grayscale(0.4);
+}
+
+.btn-jump {
+  border-radius: 9999px;
+  border: 6px solid #1a0b2e;
+  box-shadow:
+    0 10px 0 #1a0b2e,
+    0 18px 36px rgba(0, 0, 0, 0.5),
+    inset 0 4px 0 rgba(255, 255, 255, 0.5),
+    0 0 60px rgba(61, 220, 132, 0.45);
+  transition:
+    transform 0.07s ease,
+    box-shadow 0.07s ease;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+.btn-jump:active,
+.btn-jump.jumping {
+  transform: translateY(8px) scale(0.97);
+  box-shadow:
+    0 2px 0 #1a0b2e,
+    0 8px 18px rgba(0, 0, 0, 0.45),
+    inset 0 4px 0 rgba(255, 255, 255, 0.35),
+    0 0 80px rgba(61, 220, 132, 0.7);
+}
+
+/* ---------- panels ---------- */
+.panel-arcade {
+  background: linear-gradient(165deg, rgba(30, 16, 64, 0.92), rgba(14, 7, 36, 0.94));
+  border: 3px solid rgba(255, 210, 63, 0.35);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+}
+
+/* ---------- animations ---------- */
+
+/* pixel T-Rex (welcome page + countdown): runs in place, hops every few seconds */
+@keyframes pixel-dino-hop {
+  0%,
+  66% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+  }
+  78% {
+    transform: translateY(-28%);
+    animation-timing-function: cubic-bezier(0.32, 0, 0.67, 0);
+  }
+  90%,
+  100% {
+    transform: translateY(0);
+  }
+}
+/* the two run frames swap instantly (no cross-fade — it is pixel art) */
+@keyframes pixel-dino-step-a {
+  0%,
+  49.99% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes pixel-dino-step-b {
+  0%,
+  49.99% {
+    opacity: 0;
+  }
+  50%,
+  100% {
+    opacity: 1;
+  }
+}
+/* running legs while on the ground, standing pose while in the air */
+@keyframes pixel-dino-ground {
+  0%,
+  65.99% {
+    opacity: 1;
+  }
+  66%,
+  89.99% {
+    opacity: 0;
+  }
+  90%,
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes pixel-dino-air {
+  0%,
+  65.99% {
+    opacity: 0;
+  }
+  66%,
+  89.99% {
+    opacity: 1;
+  }
+  90%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes pixel-dino-shadow {
+  0%,
+  66%,
+  90%,
+  100% {
+    transform: scaleX(1);
+    opacity: 0.9;
+  }
+  78% {
+    transform: scaleX(0.6);
+    opacity: 0.4;
+  }
+}
+@keyframes blink-soft {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+@keyframes marquee-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes pop-in {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes countdown-zoom {
+  0% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+  25% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(0.95);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+}
+@keyframes ground-scroll {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: -240px;
+  }
+}
+@keyframes shine-sweep {
+  0% {
+    transform: translateX(-120%) skewX(-18deg);
+  }
+  100% {
+    transform: translateX(240%) skewX(-18deg);
+  }
+}
+@keyframes trophy-spin {
+  0%,
+  100% {
+    transform: rotate(-8deg) scale(1);
+  }
+  50% {
+    transform: rotate(8deg) scale(1.08);
+  }
+}
+
+
+.pixel-dino-hop {
+  animation: pixel-dino-hop 3.4s infinite;
+  will-change: transform;
+}
+.pixel-dino-ground {
+  animation: pixel-dino-ground 3.4s linear infinite;
+}
+.pixel-dino-air {
+  opacity: 0;
+  animation: pixel-dino-air 3.4s linear infinite;
+}
+.pixel-dino-step-a {
+  animation: pixel-dino-step-a 0.2s linear infinite;
+}
+.pixel-dino-step-b {
+  opacity: 0;
+  animation: pixel-dino-step-b 0.2s linear infinite;
+}
+.pixel-dino-shadow {
+  filter: blur(2px);
+  animation: pixel-dino-shadow 3.4s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pixel-dino-hop,
+  .pixel-dino-shadow,
+  .pixel-dino-ground,
+  .pixel-dino-air {
+    animation: none;
+  }
+}
+.animate-blink-soft {
+  animation: blink-soft 1.4s ease-in-out infinite;
+}
+.animate-pop-in {
+  animation: pop-in 0.45s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+.animate-countdown {
+  animation: countdown-zoom 1s ease-out both;
+}
+.animate-marquee {
+  animation: marquee-x 22s linear infinite;
+}
+.animate-trophy {
+  animation: trophy-spin 3s ease-in-out infinite;
+}
+
+.shine::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 45%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  animation: shine-sweep 2.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* running ground strip (welcome page) */
+.ground-strip {
+  background-image: radial-gradient(circle at 8px 8px, rgba(255, 255, 255, 0.25) 3px, transparent 4px),
+    linear-gradient(180deg, #3b2a63 0 6px, transparent 6px);
+  background-size: 48px 24px, 100% 100%;
+  animation: ground-scroll 0.9s linear infinite;
+}
+
+/* leaderboard rows */
+.lb-row {
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease;
+}
+.lb-row:hover {
+  transform: translateX(4px);
+}
+
+/* custom scrollbar for kiosk */
+.nice-scroll::-webkit-scrollbar {
+  width: 10px;
+}
+.nice-scroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+}
+.nice-scroll::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #ffd23f, #ff6b1a);
+  border-radius: 8px;
+}
+
+/* big touch targets */
+input,
+button {
+  font-family: inherit;
+}
+
+/* canvas rendering crisp */
+canvas.game-canvas {
+  image-rendering: auto;
+  touch-action: none;
+}
+
+@media (max-width: 768px) {
+  .text-stroke {
+    -webkit-text-stroke: 1.2px #1a0b2e;
+  }
+}
