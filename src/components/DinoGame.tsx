@@ -61,6 +61,15 @@ interface Cloud {
   v: number;
 }
 
+const DIFFICULTY_START_SECONDS = 10;
+const DIFFICULTY_RAMP_SECONDS = 45;
+const SPEED_RAMP_PER_SECOND = 14;
+const MAX_GAME_SPEED = 1080;
+
+function getDifficulty(elapsed: number): number {
+  return Math.min(1, Math.max(0, (elapsed - DIFFICULTY_START_SECONDS) / DIFFICULTY_RAMP_SECONDS));
+}
+
 // Tiny arcade beeps via WebAudio (jump / point / hit)
 function makeBeep(muted: () => boolean) {
   let ctx: AudioContext | null = null;
@@ -253,7 +262,7 @@ export const DinoGame = forwardRef<DinoGameHandle, Props>(function DinoGame(
     const rand = (a: number, b: number) => a + Math.random() * (b - a);
 
     const spawnObstacle = () => {
-      const diff = Math.min(1, w.elapsed / 75); // 0..1 difficulty ramp
+      const diff = getDifficulty(w.elapsed);
       const roll = Math.random();
       let kind: Obstacle["kind"] = "small";
       if (w.elapsed > 22 && roll > 0.86) kind = "bird";
@@ -277,14 +286,14 @@ export const DinoGame = forwardRef<DinoGameHandle, Props>(function DinoGame(
       w.obstacles.push({ x: w.W + 60, w: obW, h: obH, kind, dodged: false, flap: Math.random() * 10, yOff, seed });
       // gap shrinks with difficulty but stays fair at high speed
       const minGap = 300 + w.speed * 0.42;
-      const maxGap = 640 + w.speed * 0.75 - diff * 220;
+      const maxGap = 640 + w.speed * 0.75 - diff * 300;
       w.spawnIn = rand(Math.max(300, minGap), Math.max(minGap + 120, maxGap));
     };
 
     const step = (dt: number) => {
-      // difficulty: speed ramps up over time
       w.elapsed += dt;
-      const target = Math.min(980, w.baseSpeed + w.elapsed * 9.5);
+      const rampTime = Math.max(0, w.elapsed - DIFFICULTY_START_SECONDS);
+      const target = Math.min(MAX_GAME_SPEED, w.baseSpeed + rampTime * SPEED_RAMP_PER_SECOND);
       w.speed += (target - w.speed) * Math.min(1, dt * 1.5);
       const st = statsRef.current;
       st.topSpeed = Math.max(st.topSpeed, Math.round(w.speed));

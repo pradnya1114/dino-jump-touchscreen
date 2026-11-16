@@ -234,7 +234,7 @@ export function PlayScreen() {
     }
   };
 
-  const speedPct = Math.min(100, Math.round(((stats.topSpeed - 430) / (980 - 430)) * 100));
+  const speedPct = Math.min(100, Math.round(((stats.topSpeed - 430) / (1080 - 430)) * 100));
 
   return (
     <div className="relative flex min-h-screen w-full flex-col overflow-hidden bg-[#0b0620]">
