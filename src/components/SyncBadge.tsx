@@ -49,9 +49,9 @@ export function SyncBadge({ compact = false }: { compact?: boolean }) {
     s.storage === "memory"
       ? null
       : s.offlineReady === "ready"
-        ? "Offline-ready ✓"
+        ? ""
         : s.offlineReady === "preparing"
-          ? "Preparing offline…"
+          ? ""
           : null;
 
   return (
